@@ -175,22 +175,20 @@
   }
 }
 
-/* Pengaturan bingkai latar belakang arena pertarungan grafis 2D */
+/* Pengaturan bingkai latar belakang arena pertarungan grafis 2D (disusutkan ~40%) */
 .battle-area {
   background-image: url("../assets/images/ui/image.png");
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
   border-radius: 16px;
-  padding: 8px 15px;
+  padding: 8px 12px;
   display: flex;
   justify-content: center;
-  gap: 110px;
+  gap: 70px;
   align-items: flex-end;
-  height: 150px;
-  max-width: 520px;
+  height: 200px;
   width: 100%;
-  margin: 0 auto 6px auto;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4);
   position: relative;
@@ -204,10 +202,10 @@
   transition: transform 0.3s ease;
 }
 
-/* Standarisasi batas maksimum dimensi ukuran file aset gambar sprite karakter */
+/* Standarisasi batas maksimum dimensi ukuran file aset gambar sprite karakter (disesuaikan 40% lebih ringkas) */
 .sprite {
-  width: 95px;
-  height: 85px;
+  width: 85px;
+  height: 75px;
   object-fit: contain;
 }
 
@@ -223,8 +221,8 @@
 
 /* Struktur desain bar penunjuk batas poin kesehatan (HP) */
 .hp-container {
-  width: 80px;
-  height: 8px;
+  width: 75px;
+  height: 7px;
   background: #1e293b;
   border-radius: 10px;
   margin-top: 4px;
@@ -240,7 +238,7 @@
 
 .entity-name {
   font-weight: bold;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   margin-top: 3px;
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(4px);
@@ -249,13 +247,14 @@
   color: #ffffff;
 }
 
-/* Pengaturan layar pertarungan agar muat 1 layar tanpa scrollbar & tanpa tertutup bottom nav */
+/* Pengaturan layar pertarungan responsif Side-by-Side (Desktop 2-Kolom) */
 #screen-combat {
-  padding: 8px 14px;
+  padding: 14px 18px;
   display: none;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 6px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
   overflow-y: hidden !important;
   flex: 1;
 }
@@ -264,19 +263,52 @@
   display: flex;
 }
 
-/* Pengaturan tata letak wadah panel pertanyaan kuis matematika coding */
+/* Container Kolom Kiri: Battle Stage (Disusutkan 40%) */
+.battle-stage-wrapper {
+  flex: 0.95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 350px;
+}
+
+/* Container Kolom Kanan: Panel Kuis */
 .quiz-panel {
   background: var(--panel-bg);
   border-radius: 16px;
-  padding: 10px 14px;
+  padding: 14px 18px;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  justify-content: space-between;
+  gap: 8px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  max-width: 680px;
+  flex: 1.1;
+  max-width: 480px;
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
+  height: 200px;
+}
+
+@media screen and (max-width: 768px) {
+  #screen-combat {
+    flex-direction: column;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  .battle-area {
+    height: 150px;
+    max-width: 100%;
+  }
+  .quiz-panel {
+    height: auto;
+    max-width: 100%;
+    padding: 10px 14px;
+  }
+  .sprite {
+    width: 90px;
+    height: 80px;
+  }
 }
 
 .combat-hud {

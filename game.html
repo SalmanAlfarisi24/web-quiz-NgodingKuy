@@ -36,18 +36,20 @@
         <div class="map-path" id="nodes-container"></div>
     </main>
 
-    <main id="screen-combat" class="screen" style="padding: 10px;">
-        <div class="battle-area" id="battle-background">
-            <div class="entity" id="player-entity">
-                <img id="player-img" class="sprite" src="game/assets/images/player/Idle (1).png" alt="Player">
-                <div class="hp-container"><div class="hp-bar" id="player-hp-bar"></div></div>
-                <div class="entity-name">Kamu (<span id="player-hp-txt">100</span>)</div>
-            </div>
-            
-            <div class="entity" id="monster-entity">
-                <img id="zombie-img" class="sprite" src="game/assets/images/zombie/Idle (1).png" alt="Monster">
-                <div class="hp-container"><div class="hp-bar" id="monster-hp-bar" style="background: var(--hp-red);"></div></div>
-                <div class="entity-name"><span id="monster-name-txt">Monster</span> (<span id="monster-hp-txt">50</span>)</div>
+    <main id="screen-combat" class="screen">
+        <div class="battle-stage-wrapper">
+            <div class="battle-area" id="battle-background">
+                <div class="entity" id="player-entity">
+                    <img id="player-img" class="sprite" src="game/assets/images/player/Idle (1).png" alt="Player">
+                    <div class="hp-container"><div class="hp-bar" id="player-hp-bar"></div></div>
+                    <div class="entity-name">Kamu (<span id="player-hp-txt">100</span>)</div>
+                </div>
+                
+                <div class="entity" id="monster-entity">
+                    <img id="zombie-img" class="sprite" src="game/assets/images/zombie/Idle (1).png" alt="Monster">
+                    <div class="hp-container"><div class="hp-bar" id="monster-hp-bar" style="background: var(--hp-red);"></div></div>
+                    <div class="entity-name"><span id="monster-name-txt">Monster</span> (<span id="monster-hp-txt">50</span>)</div>
+                </div>
             </div>
         </div>
 

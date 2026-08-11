@@ -411,29 +411,47 @@ window.Game = (function() {
 
         const overlay = document.getElementById('reward-popup');
         const title = document.getElementById('popup-title');
+        const icon = document.getElementById('popup-icon');
+        const msg = document.getElementById('popup-msg');
         const stats = document.getElementById('reward-stats');
+        const btn = overlay ? overlay.querySelector('.btn-primary') : null;
 
         if (!overlay) return;
         overlay.classList.add('show');
-        title.innerText = isVictory ? "Level Selesai! 🎉" : "Game Over! 💀";
-        title.style.color = isVictory ? "var(--hp-green)" : "var(--hp-red)";
         
         if (isVictory) {
+            if (title) {
+                title.innerText = "Level Selesai! 🎉";
+                title.style.color = "var(--hp-green)";
+            }
+            if (icon) icon.innerText = "🏆";
+            if (msg) msg.innerText = "Kamu berhasil mengalahkan monster!";
             if (stats) stats.style.display = "grid";
+            if (btn) btn.innerText = "Lanjutkan";
+
             let rewardXp = 30 + (combatState.levelId * 10);
             let rewardCoins = 10 + (combatState.levelId * 5);
             
             player.xp += rewardXp;
             player.coins += rewardCoins;
             
-            document.getElementById('reward-xp').innerText = rewardXp;
-            document.getElementById('reward-coins').innerText = rewardCoins;
+            const xpTxt = document.getElementById('reward-xp');
+            const coinTxt = document.getElementById('reward-coins');
+            if (xpTxt) xpTxt.innerText = rewardXp;
+            if (coinTxt) coinTxt.innerText = rewardCoins;
 
             if (player.progress[combatState.worldId] === combatState.levelId) {
                 player.progress[combatState.worldId]++;
             }
         } else {
+            if (title) {
+                title.innerText = "Game Over! 💀";
+                title.style.color = "var(--hp-red)";
+            }
+            if (icon) icon.innerText = "☠️";
+            if (msg) msg.innerText = "Kamu telah dikalahkan oleh monster! Coba lagi!";
             if (stats) stats.style.display = "none";
+            if (btn) btn.innerText = "Coba Lagi";
         }
         updateHUD();
         saveUserData();
