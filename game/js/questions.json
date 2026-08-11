@@ -1,0 +1,53 @@
+{
+    "worlds": [
+        { "id": "html", "name": "HTML Dasar", "icon": "🌐", "color": "#E44D26" },
+        { "id": "css", "name": "CSS Styling", "icon": "🎨", "color": "#264DE4" },
+        { "id": "php", "name": "PHP Scripting", "icon": "🐘", "color": "#777BB4" },
+        { "id": "database", "name": "MySQL Database", "icon": "💾", "color": "#00758F" }
+    ],
+    "levels": {
+        "html": [
+            { "id": 1, "hp": 50 },
+            { "id": 2, "hp": 80 },
+            { "id": 3, "hp": 120 }
+        ],
+        "css": [
+            { "id": 1, "hp": 60 },
+            { "id": 2, "hp": 90 },
+            { "id": 3, "hp": 130 }
+        ],
+        "php": [
+            { "id": 1, "hp": 70 },
+            { "id": 2, "hp": 100 },
+            { "id": 3, "hp": 140 }
+        ],
+        "database": [
+            { "id": 1, "hp": 80 },
+            { "id": 2, "hp": 110 },
+            { "id": 3, "hp": 150 }
+        ]
+    },
+    "questions": {
+        "html": [
+            { "q": "Tag apa yang digunakan untuk membuat paragraf?", "options": ["<p>", "<h1>", "<a>", "<div>"], "a": 0 },
+            { "q": "Atribut untuk menentukan URL gambar pada tag <img> adalah?", "options": ["href", "link", "src", "alt"], "a": 2 },
+            { "q": "Tag HTML yang benar untuk membuat teks menjadi tebal adalah?", "options": ["<bold>", "<b>", "<important>", "<thick>"], "a": 1 },
+            { "q": "Karakter apa yang digunakan untuk tag penutup?", "options": ["/", "\\", "*", "^"], "a": 0 }
+        ],
+        "css": [
+            { "q": "Properti CSS mana yang digunakan untuk mengubah warna teks?", "options": ["text-color", "font-color", "color", "background-color"], "a": 2 },
+            { "q": "Bagaimana cara memilih elemen dengan id 'header' di CSS?", "options": [".header", "#header", "*header", "header"], "a": 1 },
+            { "q": "Properti mana yang mengatur ketebalan teks?", "options": ["font-style", "font-weight", "text-transform", "font-size"], "a": 1 }
+        ],
+        "php": [
+            { "q": "Karakter mana yang digunakan untuk memulai variabel di PHP?", "options": ["&", "!", "$", "#"], "a": 2 },
+            { "q": "Perintah mana yang digunakan untuk mencetak teks ke layar di PHP?", "options": ["print_text", "echo", "console.log", "out"], "a": 1 },
+            { "q": "Fungsi PHP mana yang digunakan untuk membuka koneksi ke MySQL?", "options": ["mysql_open()", "mysqli_connect()", "db_connect()", "connect_mysql()"], "a": 1 }
+        ],
+        "database": [
+            { "q": "Perintah SQL mana yang digunakan untuk mengambil data dari database?", "options": ["GET", "OPEN", "SELECT", "EXTRACT"], "a": 2 },
+            { "q": "Bagaimana cara memilih semua kolom dari tabel bernama 'users'?", "options": ["SELECT * FROM users", "SELECT users", "FROM users SELECT all", "GET * FROM users"], "a": 0 },
+            { "q": "Klausa mana yang digunakan untuk menyaring record berdasarkan kondisi tertentu?", "options": ["WHERE", "HAVING", "GROUP BY", "ORDER BY"], "a": 0 }
+        ]
+    }
+}

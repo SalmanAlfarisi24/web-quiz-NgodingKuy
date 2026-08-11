@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Code Journey - Arena Game</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div id="game-container">
+    
+    <header id="hud">
+        <div class="hud-left">
+            <a href="../index.html" class="stat-badge" style="text-decoration:none; color:var(--text-dark); cursor:pointer;"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+            <div class="stat-badge">👨‍💻 Lvl <span id="hud-level">1</span></div>
+            <div class="stat-badge" style="color: var(--primary)">⭐ <span id="hud-xp">0</span></div>
+        </div>
+        <div class="hud-right">
+            <div class="stat-badge" style="color: #F1C40F">🪙 <span id="hud-coins">0</span></div>
+            <div class="stat-badge" style="color: #9B59B6">💎 <span id="hud-gems">0</span></div>
+        </div>
+    </header>
+
+    <main id="screen-home" class="screen active">
+        <h2 class="world-title">Pilih Materi</h2>
+        <div class="options-grid" id="worlds-container"></div>
+    </main>
+
+    <main id="screen-map" class="screen">
+        <button class="tool-btn" onclick="Game.showScreen('home')" style="width: fit-content; margin-bottom: 10px;">⬅ Kembali</button>
+        <h2 class="world-title" id="current-world-title">Materi</h2>
+        <div class="map-path" id="nodes-container"></div>
+    </main>
+
+    <main id="screen-combat" class="screen" style="padding: 10px;">
+        <div class="battle-area" id="battle-background">
+            <div class="entity" id="player-entity">
+                <img id="player-img" class="sprite" src="assets/images/player/Idle (1).png" alt="Player">
+                <div class="hp-container"><div class="hp-bar" id="player-hp-bar"></div></div>
+                <div class="entity-name">Kamu (<span id="player-hp-txt">100</span>)</div>
+            </div>
+            
+            <div class="entity" id="monster-entity">
+                <img id="zombie-img" class="sprite" src="assets/images/zombie/Idle (1).png" alt="Monster">
+                <div class="hp-container"><div class="hp-bar" id="monster-hp-bar" style="background: var(--hp-red);"></div></div>
+                <div class="entity-name"><span id="monster-name-txt">Monster</span> (<span id="monster-hp-txt">50</span>)</div>
+            </div>
+        </div>
+
+        <div class="quiz-panel">
+            <div class="combat-hud">
+                <div id="combo-display">Combo: x<span id="combo-count">0</span></div>
+                <div id="timer-display">⏱ <span id="time-left">15</span>s</div>
+            </div>
+            
+            <h3 id="question-text">Memuat pertanyaan...</h3>
+            
+            <div class="options-grid" id="options-container"></div>
+
+            <div class="combat-tools">
+                <button class="tool-btn" onclick="Game.useHint()" id="btn-hint">💡 Hint (10 🪙)</button>
+                <button class="tool-btn" onclick="Game.fleeBattle()">🏳️ Kabur</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="screen-shop" class="screen">
+        <h2 class="world-title">Toko Kosmetik</h2>
+        <p style="text-align:center; color: #7f8c8d; margin-bottom: 20px;">Gunakan koin dan gem untuk membeli item!</p>
+        <div class="options-grid">
+            <button class="option-btn" style="text-align:center">Avatar Ninja 🥷<br><br>💎 50 Gem</button>
+            <button class="option-btn" style="text-align:center">Pet Robot 🤖<br><br>🪙 500 Koin</button>
+        </div>
+    </main>
+
+    <main id="screen-rank" class="screen">
+        <h2 class="world-title">🏆 Papan Peringkat</h2>
+        <p style="text-align:center; color: #7f8c8d; margin-bottom: 15px;">Daftar top player berdasarkan akumulasi XP.</p>
+        <div class="rank-container">
+            <table class="rank-table">
+                <thead>
+                    <tr>
+                        <th>Pos</th>
+                        <th>Username</th>
+                        <th>Level</th>
+                        <th>XP</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <tr>
+                        <td colspan="4" style="text-align:center; color: var(--text-muted);">Memuat data peringkat...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="Game.showScreen('home', this)">🗺️<span>Map</span></button>
+        <button class="nav-btn" onclick="Game.showScreen('shop', this)">🛒<span>Shop</span></button>
+        <button class="nav-btn" onclick="Game.showScreen('rank', this)">🏆<span>Rank</span></button>
+        <button class="nav-btn" onclick="alert('Fitur Misi segera hadir')">📜<span>Misi</span></button>
+    </nav>
+
+    <div class="popup-overlay" id="reward-popup">
+        <div class="popup-box">
+            <h2 class="popup-title" id="popup-title">Level Selesai! 🎉</h2>
+            <div style="font-size: 50px; margin: 10px 0;" id="popup-icon">🏆</div>
+            <p id="popup-msg">Kamu berhasil mengalahkan monster!</p>
+            
+            <div class="reward-grid" id="reward-stats">
+                <div class="reward-item">XP<br>+<span id="reward-xp">0</span></div>
+                <div class="reward-item">Koin<br>+<span id="reward-coins">0</span></div>
+            </div>
+            
+            <button class="btn-primary" onclick="Game.closePopup()">Lanjutkan</button>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/sprite.js"></script>
+<script src="js/combat.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

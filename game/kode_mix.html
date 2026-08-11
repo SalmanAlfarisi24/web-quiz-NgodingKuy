@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Code Journey</title>
+    <style>
+        /* =========================================
+           BAGIAN CSS (Pindahkan ke css/style.css)
+           ========================================= */
+        :root {
+            --primary: #4A90E2;
+            --secondary: #50E3C2;
+            --accent: #F5A623;
+            --bg-color: #F0F4F8;
+            --text-dark: #2C3E50;
+            --hp-green: #2ECC71;
+            --hp-red: #E74C3C;
+            --panel-bg: #FFFFFF;
+            --shadow: 0 8px 24px rgba(0,0,0,0.1);
+            --border-radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Mencegah scroll di mobile */
+        }
+
+        #game-container {
+            width: 100%;
+            max-width: 480px; /* Ukuran mobile-first, bagus di desktop juga */
+            height: 100vh;
+            max-height: 850px;
+            background: var(--bg-color);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(0,0,0,0.2);
+        }
+
+        /* --- HUD / Header --- */
+        #hud {
+            background: var(--panel-bg);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        .hud-left, .hud-right { display: flex; gap: 15px; align-items: center; }
+        .stat-badge {
+            background: var(--bg-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* --- Screens --- */
+        .screen {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px;
+            animation: fadeIn 0.4s ease;
+        }
+        .screen.active { display: flex; }
+
+        /* --- Map Screen --- */
+        .world-title { text-align: center; margin-bottom: 20px; color: var(--primary); }
+        .map-path {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            padding: 20px 0;
+            position: relative;
+        }
+        /* Garis penghubung node */
+        .map-path::before {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0;
+            width: 6px;
+            background: #D5DDE5;
+            z-index: 0;
+        }
+        .node-btn {
+            position: relative;
+            z-index: 1;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            background: var(--secondary);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .node-btn:hover:not(:disabled) { transform: scale(1.1); }
+        .node-btn:disabled { background: #BDC3C7; cursor: not-allowed; }
+        .node-btn.boss { background: var(--hp-red); border-radius: 20%; width: 80px; height: 80px; }
+
+        /* --- Combat Screen --- */
+        .battle-area {
+            background: linear-gradient(to bottom, #87CEEB, #E0F6FF);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 250px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .entity { text-align: center; display: flex; flex-direction: column; align-items: center;}
+        .sprite { font-size: 70px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2)); transition: transform 0.2s;}
+        
+        .hp-container {
+            width: 100px; height: 12px;
+            background: #fff; border-radius: 10px;
+            margin-top: 10px; border: 2px solid #333;
+            overflow: hidden;
+        }
+        .hp-bar { height: 100%; background: var(--hp-green); transition: width 0.3s ease; }
+        .entity-name { font-weight: bold; font-size: 0.9rem; margin-top: 5px; background: rgba(255,255,255,0.8); padding: 2px 8px; border-radius: 10px;}
+
+        /* Quiz Panel */
+        .quiz-panel {
+            background: var(--panel-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .combat-hud { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; font-weight: bold; color: var(--accent); }
+        
+        #question-text { font-size: 1.1rem; line-height: 1.5; margin-bottom: 20px; text-align: center; }
+        
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .option-btn {
+            padding: 15px;
+            background: var(--bg-color);
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #EBF4FF; }
+        .option-btn.correct { background: var(--hp-green); color: white; border-color: var(--hp-green); }
+        .option-btn.wrong { background: var(--hp-red); color: white; border-color: var(--hp-red); }
+
+        .combat-tools { display: flex; justify-content: space-between; margin-top: 15px; }
+        .tool-btn { padding: 10px; border-radius: 8px; border: none; background: #E2E8F0; font-weight: bold; cursor: pointer; }
+
+        /* --- Menus / Bottom Nav --- */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            background: var(--panel-bg);
+            padding: 15px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+        .nav-btn {
+            background: none; border: none; font-size: 1.5rem; color: #95A5A6; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+        }
+        .nav-btn span { font-size: 0.7rem; font-weight: bold; }
+        .nav-btn.active { color: var(--primary); }
+
+        /* --- Popups --- */
+        .popup-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 100;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .popup-overlay.show { opacity: 1; pointer-events: auto; }
+        .popup-box {
+            background: white; padding: 30px; border-radius: 20px;
+            text-align: center; width: 85%; max-width: 350px;
+            transform: translateY(20px); transition: transform 0.3s;
+        }
+        .popup-overlay.show .popup-box { transform: translateY(0); }
+        .popup-title { font-size: 1.5rem; margin-bottom: 10px; color: var(--primary); }
+        .reward-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+        .reward-item { background: #F8F9FA; padding: 10px; border-radius: 10px; font-weight: bold; }
+        .btn-primary {
+            background: var(--primary); color: white; border: none;
+            padding: 12px 24px; border-radius: 10px; font-size: 1rem; font-weight: bold; width: 100%; cursor: pointer;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+        @keyframes attackHit { 0% { transform: scale(1) translateX(0); } 50% { transform: scale(1.2) translateX(30px); } 100% { transform: scale(1) translateX(0); } }
+        @keyframes enemyHit { 0% { transform: scale(1) translateX(0); } 50% { transform: scale(1.2) translateX(-30px); } 100% { transform: scale(1) translateX(0); } }
+        @keyframes flashRed { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(0.5) sepia(1) hue-rotate(-50deg) saturate(5); } }
+        
+        .anim-shake { animation: shake 0.4s ease; }
+        .anim-attack { animation: attackHit 0.3s ease; }
+        .anim-enemy-attack { animation: enemyHit 0.3s ease; }
+        .anim-damage { animation: flashRed 0.4s ease; }
+
+        /* Mencegah highlight biru saat di tap di mobile */
+        button { -webkit-tap-highlight-color: transparent; }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    
+    <!-- HUD -->
+    <header id="hud">
+        <div class="hud-left">
+            <div class="stat-badge">👨‍💻 Lvl <span id="hud-level">1</span></div>
+            <div class="stat-badge" style="color: var(--primary)">⭐ <span id="hud-xp">0</span></div>
+        </div>
+        <div class="hud-right">
+            <div class="stat-badge" style="color: #F1C40F">🪙 <span id="hud-coins">0</span></div>
+            <div class="stat-badge" style="color: #9B59B6">💎 <span id="hud-gems">0</span></div>
+        </div>
+    </header>
+
+    <!-- 1. HOME SCREEN (World Selection) -->
+    <main id="screen-home" class="screen active">
+        <h2 class="world-title">Pilih Materi</h2>
+        <div class="options-grid" id="worlds-container">
+            <!-- Dirender via JS -->
+        </div>
+    </main>
+
+    <!-- 2. MAP SCREEN (Node Level Selection) -->
+    <main id="screen-map" class="screen">
+        <button class="tool-btn" onclick="Game.showScreen('home')" style="width: fit-content; margin-bottom: 10px;">⬅ Kembali</button>
+        <h2 class="world-title" id="current-world-title">Dunia HTML</h2>
+        <div class="map-path" id="nodes-container">
+            <!-- Dirender via JS -->
+        </div>
+    </main>
+
+    <!-- 3. COMBAT SCREEN -->
+    <main id="screen-combat" class="screen" style="padding: 10px;">
+        <div class="battle-area">
+            <div class="entity" id="player-entity">
+                <div class="sprite" id="player-sprite">🧑‍💻</div>
+                <div class="hp-container"><div class="hp-bar" id="player-hp-bar"></div></div>
+                <div class="entity-name">Kamu (<span id="player-hp-txt">100</span>)</div>
+            </div>
+            
+            <div class="entity" id="monster-entity">
+                <div class="sprite" id="monster-sprite">👾</div>
+                <div class="hp-container"><div class="hp-bar" id="monster-hp-bar" style="background: var(--hp-red);"></div></div>
+                <div class="entity-name"><span id="monster-name-txt">Bug Slime</span> (<span id="monster-hp-txt">50</span>)</div>
+            </div>
+        </div>
+
+        <div class="quiz-panel">
+            <div class="combat-hud">
+                <div id="combo-display">Combo: x<span id="combo-count">0</span></div>
+                <div id="timer-display">⏱ <span id="time-left">15</span>s</div>
+            </div>
+            
+            <h3 id="question-text">Memuat pertanyaan...</h3>
+            
+            <div class="options-grid" id="options-container">
+                <!-- Dirender via JS -->
+            </div>
+
+            <div class="combat-tools">
+                <button class="tool-btn" onclick="Game.useHint()" id="btn-hint">💡 Hint (10 🪙)</button>
+                <button class="tool-btn" onclick="Game.fleeBattle()">🏳️ Kabur</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 4. SHOP / PROFILE SCREEN (Mockup) -->
+    <main id="screen-shop" class="screen">
+        <h2 class="world-title">Toko Kosmetik</h2>
+        <p style="text-align:center; color: #7f8c8d; margin-bottom: 20px;">Gunakan koin dan gem untuk membeli avatar baru!</p>
+        <div class="options-grid">
+            <button class="option-btn" style="text-align:center">Avatar Ninja 🥷<br><br>💎 50 Gem</button>
+            <button class="option-btn" style="text-align:center">Pet Robot 🤖<br><br>🪙 500 Koin</button>
+            <button class="option-btn" style="text-align:center">Frame Emas 🖼️<br><br>🪙 1000 Koin</button>
+        </div>
+    </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <button class="nav-btn active" onclick="Game.showScreen('home', this)">🗺️<span>Map</span></button>
+        <button class="nav-btn" onclick="Game.showScreen('shop', this)">🛒<span>Shop</span></button>
+        <button class="nav-btn" onclick="alert('Fitur Leaderboard akan terhubung ke PHP/Database')">🏆<span>Rank</span></button>
+        <button class="nav-btn" onclick="alert('Fitur Misi Harian akan terhubung ke PHP/Database')">📜<span>Misi</span></button>
+    </nav>
+
+    <!-- POPUP REWARD -->
+    <div class="popup-overlay" id="reward-popup">
+        <div class="popup-box">
+            <h2 class="popup-title" id="popup-title">Level Selesai! 🎉</h2>
+            <div class="sprite" style="font-size: 50px; margin: 10px 0;" id="popup-icon">🏆</div>
+            <p id="popup-msg">Kamu berhasil mengalahkan monster!</p>
+            
+            <div class="reward-grid" id="reward-stats">
+                <div class="reward-item">XP<br>+<span id="reward-xp">0</span></div>
+                <div class="reward-item">Koin<br>+<span id="reward-coins">0</span></div>
+            </div>
+            
+            <button class="btn-primary" onclick="Game.closePopup()">Lanjutkan</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+/* =====================================================================
+   BAGIAN JSON (Simulasi fetch data dari json/questions.json)
+   ===================================================================== */
+const GameData = {
+    worlds: [
+        { id: 'html', name: 'HTML Dasar', icon: '🌐', color: '#E44D26' },
+        { id: 'css', name: 'CSS Styling', icon: '🎨', color: '#264DE4' },
+        { id: 'js', name: 'JavaScript Core', icon: '⚡', color: '#F7DF1E' }
+        // Dunia lain seperti PHP, Database, dll bisa ditambahkan di sini
+    ],
+    levels: {
+        'html': [
+            { id: 1, type: 'normal', monster: 'Tag Slime', sprite: '🦠', hp: 40 },
+            { id: 2, type: 'normal', monster: 'Form Goblin', sprite: '👺', hp: 60 },
+            { id: 3, type: 'boss', monster: 'King DOM', sprite: '🐲', hp: 100 }
+        ]
+    },
+    questions: {
+        'html': [
+            { q: "Tag apa yang digunakan untuk membuat paragraf?", options: ["<p>", "<h1>", "<a>", "<div>"], a: 0 },
+            { q: "Atribut untuk menentukan URL gambar pada tag <img> adalah?", options: ["href", "link", "src", "alt"], a: 2 },
+            { q: "Tag HTML yang benar untuk membuat teks menjadi tebal adalah?", options: ["<bold>", "<b>", "<important>", "<thick>"], a: 1 },
+            { q: "Elemen HTML mana yang mendefinisikan judul dokumen?", options: ["<head>", "<meta>", "<title>", "<h1>"], a: 2 },
+            { q: "Karakter apa yang digunakan untuk tag penutup?", options: ["/", "\\", "*", "^"], a: 0 },
+            { q: "Bagaimana cara membuat hyperlink?", options: ["<a href='url'>", "<link src='url'>", "<a>url</a>", "<hyper>url</hyper>"], a: 0 }
+        ]
+    }
+};
+
+/* =====================================================================
+   BAGIAN JAVASCRIPT LOGIC (Pindahkan ke js/game.js dan js/app.js)
+   Arsitektur MVC Sederhana (Model-View-Controller dalam satu namespace)
+   ===================================================================== */
+const Game = (function() {
+    
+    // --- MODEL (State & Database Simulation) ---
+    // Di produksi nyata, ini disimpan dalam localStorage (ngodingkuy_gamedata)
+    let player = {
+        name: "DevNovice",
+        level: 1,
+        xp: 0,
+        coins: 100,
+        gems: 10,
+        hp: 100,
+        maxHp: 100,
+        progress: {
+            'html': 1 // Level tertinggi yang terbuka di dunia HTML
+        }
+    };
+
+    let combatState = {
+        active: false,
+        worldId: '',
+        levelId: 0,
+        monsterHp: 0,
+        monsterMaxHp: 0,
+        questions: [],
+        currentQ: 0,
+        combo: 0,
+        timeLeft: 15,
+        timerInterval: null
+    };
+
+    // --- INIT & UTILS ---
+    function init() {
+        loadSave(); // Load dari localStorage
+        updateHUD();
+        renderWorlds();
+    }
+
+    function saveProgress() {
+        // Simpan progres ke localStorage
+        localStorage.setItem('codeJourney_save', JSON.stringify(player));
+    }
+
+    function loadSave() {
+        const saved = localStorage.getItem('codeJourney_save');
+        if (saved) { player = JSON.parse(saved); }
+    }
+
+    // --- VIEW / NAVIGATION ---
+    function showScreen(screenId, navBtn = null) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(`screen-${screenId}`).classList.add('active');
+        
+        if (navBtn) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            navBtn.classList.add('active');
+        }
+    }
+
+    function updateHUD() {
+        // Kalkulasi Level (1 level = 100 XP)
+        const newLevel = Math.floor(player.xp / 100) + 1;
+        if(newLevel > player.level) {
+            player.level = newLevel;
+            player.maxHp = 100 + (player.level * 20); // HP naik tiap level
+            player.hp = player.maxHp;
+        }
+
+        document.getElementById('hud-level').innerText = player.level;
+        document.getElementById('hud-xp').innerText = player.xp;
+        document.getElementById('hud-coins').innerText = player.coins;
+        document.getElementById('hud-gems').innerText = player.gems;
+    }
+
+    // --- MAP SYSTEM ---
+    function renderWorlds() {
+        const container = document.getElementById('worlds-container');
+        container.innerHTML = '';
+        
+        GameData.worlds.forEach(w => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerHTML = `<span style="font-size:1.5rem">${w.icon}</span> ${w.name}`;
+            btn.style.borderLeft = `5px solid ${w.color}`;
+            btn.onclick = () => openWorld(w.id);
+            container.appendChild(btn);
+        });
+    }
+
+    function openWorld(worldId) {
+        const world = GameData.worlds.find(w => w.id === worldId);
+        document.getElementById('current-world-title').innerText = world.name;
+        
+        const container = document.getElementById('nodes-container');
+        container.innerHTML = '';
+        
+        const levels = GameData.levels[worldId] || [];
+        const playerMaxLevel = player.progress[worldId] || 1;
+
+        levels.forEach(lvl => {
+            const btn = document.createElement('button');
+            btn.className = `node-btn ${lvl.type === 'boss' ? 'boss' : ''}`;
+            
+            if (lvl.id > playerMaxLevel) {
+                btn.disabled = true;
+                btn.innerText = '🔒';
+            } else {
+                btn.innerText = lvl.id;
+                btn.onclick = () => prepareCombat(worldId, lvl);
+            }
+            container.appendChild(btn);
+        });
+
+        showScreen('map');
+    }
+
+    // --- COMBAT SYSTEM ---
+    function prepareCombat(worldId, levelData) {
+        player.hp = player.maxHp; // Heal sebelum masuk level
+        
+        combatState = {
+            active: true,
+            worldId: worldId,
+            levelId: levelData.id,
+            monsterHp: levelData.hp,
+            monsterMaxHp: levelData.hp,
+            monsterSprite: levelData.sprite,
+            monsterName: levelData.monster,
+            questions: shuffleArray([...GameData.questions[worldId]]), // Ambil acak soal
+            currentQ: 0,
+            combo: 0,
+            timeLeft: 15
+        };
+
+        // Setup UI
+        document.getElementById('monster-sprite').innerText = levelData.sprite;
+        document.getElementById('monster-name-txt').innerText = levelData.monster;
+        document.getElementById('player-hp-txt').innerText = player.hp;
+        
+        updateHealthBars();
+        updateCombatHUD();
+        showScreen('combat');
+        nextQuestion();
+    }
+
+    function nextQuestion() {
+        if (combatState.monsterHp <= 0) return endCombat(true);
+        if (player.hp <= 0) return endCombat(false);
+        
+        // Loop soal jika habis
+        if (combatState.currentQ >= combatState.questions.length) {
+            combatState.currentQ = 0;
+            combatState.questions = shuffleArray(combatState.questions);
+        }
+
+        const q = combatState.questions[combatState.currentQ];
+        document.getElementById('question-text').innerText = q.q;
+        
+        const optContainer = document.getElementById('options-container');
+        optContainer.innerHTML = '';
+        
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = opt;
+            btn.onclick = () => handleAnswer(btn, idx, q.a);
+            optContainer.appendChild(btn);
+        });
+
+        resetTimer();
+    }
+
+    function handleAnswer(btnElement, selectedIdx, correctIdx) {
+        clearInterval(combatState.timerInterval);
+        const options = document.querySelectorAll('#options-container .option-btn');
+        options.forEach(b => b.disabled = true); // Kunci jawaban
+
+        if (selectedIdx === correctIdx) {
+            // BENAR
+            btnElement.classList.add('correct');
+            combatState.combo++;
+            
+            // Damage kalkulasi (Base 15 + Combo bonus)
+            let damage = 15 + (combatState.combo * 2);
+            combatState.monsterHp = Math.max(0, combatState.monsterHp - damage);
+            
+            // Animasi Player Serang & Monster Kena
+            anim('player-sprite', 'anim-attack');
+            setTimeout(() => {
+                anim('monster-sprite', 'anim-damage');
+                anim('monster-sprite', 'anim-shake');
+            }, 200);
+
+        } else {
+            // SALAH ATAU TIMEOUT
+            if(btnElement) btnElement.classList.add('wrong');
+            // Tunjukkan yang benar
+            if(correctIdx !== -1) options[correctIdx].classList.add('correct');
+            
+            combatState.combo = 0;
+            let damage = 20; // Damage dari monster
+            player.hp = Math.max(0, player.hp - damage);
+
+            // Animasi Monster Serang & Player Kena
+            anim('monster-sprite', 'anim-enemy-attack');
+            setTimeout(() => {
+                anim('player-sprite', 'anim-damage');
+                anim('player-container', 'anim-shake'); // Shake container HP
+            }, 200);
+        }
+
+        updateHealthBars();
+        updateCombatHUD();
+        combatState.currentQ++;
+
+        setTimeout(() => {
+            if(combatState.active) nextQuestion();
+        }, 1500);
+    }
+
+    function updateHealthBars() {
+        const pPct = (player.hp / player.maxHp) * 100;
+        const mPct = (combatState.monsterHp / combatState.monsterMaxHp) * 100;
+        
+        document.getElementById('player-hp-bar').style.width = `${pPct}%`;
+        document.getElementById('player-hp-txt').innerText = player.hp;
+        
+        document.getElementById('monster-hp-bar').style.width = `${mPct}%`;
+        document.getElementById('monster-hp-txt').innerText = Math.floor(combatState.monsterHp);
+    }
+
+    function updateCombatHUD() {
+        document.getElementById('combo-count').innerText = combatState.combo;
+        document.getElementById('time-left').innerText = combatState.timeLeft;
+    }
+
+    // --- TIMER SYSTEM ---
+    function resetTimer() {
+        clearInterval(combatState.timerInterval);
+        combatState.timeLeft = 15;
+        updateCombatHUD();
+        
+        combatState.timerInterval = setInterval(() => {
+            combatState.timeLeft--;
+            updateCombatHUD();
+            
+            if (combatState.timeLeft <= 0) {
+                handleAnswer(null, -1, combatState.questions[combatState.currentQ].a); // Anggap salah
+            }
+        }, 1000);
+    }
+
+    // --- REWARDS & PROGRESSION ---
+    function endCombat(isVictory) {
+        combatState.active = false;
+        clearInterval(combatState.timerInterval);
+
+        const overlay = document.getElementById('reward-popup');
+        const title = document.getElementById('popup-title');
+        const msg = document.getElementById('popup-msg');
+        const icon = document.getElementById('popup-icon');
+        const stats = document.getElementById('reward-stats');
+
+        if (isVictory) {
+            title.innerText = "Level Selesai! 🎉";
+            title.style.color = "var(--hp-green)";
+            icon.innerText = "🏆";
+            msg.innerText = "Monster berhasil dikalahkan!";
+            stats.style.display = "grid";
+            
+            // Kalkulasi Reward
+            let rewardXp = 30 + (combatState.levelId * 10);
+            let rewardCoins = 10 + (combatState.levelId * 5);
+            
+            player.xp += rewardXp;
+            player.coins += rewardCoins;
+            
+            document.getElementById('reward-xp').innerText = rewardXp;
+            document.getElementById('reward-coins').innerText = rewardCoins;
+
+            // Buka level selanjutnya
+            if (player.progress[combatState.worldId] === combatState.levelId) {
+                player.progress[combatState.worldId]++;
+            }
+
+            saveProgress();
+            updateHUD();
+        } else {
+            title.innerText = "Game Over! 💀";
+            title.style.color = "var(--hp-red)";
+            icon.innerText = "💊";
+            msg.innerText = "HP kamu habis. Belajar lagi dan coba kembali!";
+            stats.style.display = "none";
+        }
+
+        overlay.classList.add('show');
+    }
+
+    function closePopup() {
+        document.getElementById('reward-popup').classList.remove('show');
+        openWorld(combatState.worldId); // Kembali ke map
+    }
+
+    function fleeBattle() {
+        if(confirm("Yakin ingin kabur? Progres level ini tidak akan disimpan.")) {
+            combatState.active = false;
+            clearInterval(combatState.timerInterval);
+            openWorld(combatState.worldId);
+        }
+    }
+
+    function useHint() {
+        if (player.coins >= 10) {
+            player.coins -= 10;
+            updateHUD();
+            
+            // Hilangkan 2 jawaban salah
+            const q = combatState.questions[combatState.currentQ];
+            const options = document.querySelectorAll('#options-container .option-btn');
+            let removed = 0;
+            
+            options.forEach((btn, idx) => {
+                if (idx !== q.a && removed < 2) {
+                    btn.style.opacity = '0.3';
+                    btn.disabled = true;
+                    removed++;
+                }
+            });
+            document.getElementById('btn-hint').disabled = true;
+        } else {
+            alert("Koin tidak cukup untuk Hint!");
+        }
+    }
+
+    // --- HELPER FUNCTIONS ---
+    function anim(elementId, animClass) {
+        const el = document.getElementById(elementId);
+        if(!el) return;
+        el.classList.remove(animClass);
+        void el.offsetWidth; // Trigger reflow
+        el.classList.add(animClass);
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    // Public API Controller
+    return {
+        init, showScreen, useHint, fleeBattle, closePopup
+    };
+})();
+
+// Menjalankan game ketika DOM siap
+document.addEventListener('DOMContentLoaded', Game.init);
+</script>
+
+</body>
+</html>

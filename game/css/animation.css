@@ -1,0 +1,56 @@
+/* Efek animasi transisi memudar (Fade In) saat melakukan perpindahan halaman layar game */
+.screen {
+    animation: fadeIn 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Efek animasi getar horisontal (Shake) pada UI saat karakter atau monster menerima serangan */
+.anim-shake { 
+    animation: shakeUI 0.4s ease; 
+}
+
+@keyframes shakeUI {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* Efek kilatan perubahan warna komponen (Flash Damage) menjadi kemerahan saat terkena luka */
+.anim-damage { 
+    animation: flashDamage 0.4s ease; 
+}
+
+@keyframes flashDamage {
+    0%, 100% { 
+        filter: brightness(1); 
+    }
+    50% { 
+        filter: brightness(0.6) sepia(1) hue-rotate(-50deg) saturate(5); 
+    }
+}
+
+/* Efek perubahan warna latar belakang komponen menjadi hijau jika pilihan jawaban kuis benar */
+.option-btn.correct { 
+    background: var(--hp-green) !important; 
+    color: white !important; 
+    border-color: var(--hp-green) !important; 
+    box-shadow: 0 0 12px var(--hp-green);
+}
+
+/* Efek perubahan warna latar belakang komponen menjadi merah jika pilihan jawaban kuis salah */
+.option-btn.wrong { 
+    background: var(--hp-red) !important; 
+    color: white !important; 
+    border-color: var(--hp-red) !important; 
+    box-shadow: 0 0 12px var(--hp-red);
+}

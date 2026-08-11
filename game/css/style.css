@@ -1,0 +1,78 @@
+/* Pengaturan variabel warna dasar, ukuran radius, dan efek bayangan komponen game */
+:root {
+    --primary: #3B82F6;
+    --secondary: #38BDF8;
+    --accent: #F5A623;
+    --bg-color: #0F172A;
+    --text-dark: #F8FAFC;
+    --hp-green: #10B981;
+    --hp-red: #EF4444;
+    --panel-bg: #1E293B;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --border-radius: 16px;
+}
+
+/* Pengaturan reset margin, padding, tipe font global, serta pemblokiran seleksi teks otomatis */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Poppins', sans-serif;
+    user-select: none;
+}
+
+/* Pengaturan tata letak kontainer utama halaman browser agar elemen game selalu berada di tengah layar */
+body {
+    background-color: #0F172A;
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Pengaturan warna font bawaan untuk elemen judul dan sub-judul kuis */
+h2, h3 { 
+    color: var(--secondary); 
+}
+
+/* Pengaturan dasar interaksi tombol dan penonaktifan highlight box bawaan perangkat mobile */
+button {
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+}
+
+/* Gaya visual dasar untuk tombol aksi utama berukuran penuh */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+/* Perubahan warna latar belakang tombol utama saat kursor berada di atas elemen */
+.btn-primary:hover { 
+    background: #2563EB; 
+}
+
+/* Gaya visual dasar untuk tombol fungsional sekunder atau navigasi kembali */
+.tool-btn {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    background: var(--panel-bg);
+    font-weight: bold;
+    color: var(--secondary);
+    transition: all 0.2s;
+}
+
+/* Perubahan gaya visual tombol sekunder saat kursor berada di atas elemen */
+.tool-btn:hover {
+    background: var(--primary);
+    color: white;
+}
