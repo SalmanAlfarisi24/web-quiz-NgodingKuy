@@ -80,7 +80,7 @@ const CombatLogic = (function() {
         const isMelee = Math.random() > 0.5;
 
         if (isMelee) {
-            if (pImg) pImg.style.transform = "translateX(75px) scaleX(1)";
+            if (pImg) pImg.style.transform = "translateX(72px) scaleX(1)";
             
             sfx.melee.currentTime = 0;
             sfx.melee.play().catch(e => {});
@@ -91,7 +91,7 @@ const CombatLogic = (function() {
                 });
             });
         } else {
-            if (pImg) pImg.style.transform = "translateX(15px) scaleX(1)"; 
+            if (pImg) pImg.style.transform = "translateX(20px) scaleX(1)"; 
             
             sfx.shoot.currentTime = 0;
             sfx.shoot.play().catch(e => {});
@@ -124,7 +124,7 @@ const CombatLogic = (function() {
         sfx.wrong.play().catch(e => {});
 
         const zImg = document.getElementById('zombie-img');
-        if (zImg) zImg.style.transform = "translateX(-75px) scaleX(-1)";
+        if (zImg) zImg.style.transform = "translateX(-72px) scaleX(-1)";
 
         SpriteSystem.play('zombie-img', 'assets/images/zombie/Walk', 10, 80, () => {
             

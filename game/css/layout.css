@@ -158,39 +158,47 @@
 }
 
 @keyframes nodePulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 15px #38bdf8, 0 8px 20px rgba(56, 189, 248, 0.5);
   }
+
   50% {
     box-shadow: 0 0 28px #38bdf8, 0 12px 30px rgba(56, 189, 248, 0.9);
   }
 }
 
 @keyframes bossPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 20px #ef4444, 0 8px 20px rgba(239, 68, 68, 0.6);
   }
+
   50% {
     box-shadow: 0 0 35px #ef4444, 0 12px 30px rgba(239, 68, 68, 1);
   }
 }
 
-/* Pengaturan bingkai latar belakang arena pertarungan grafis 2D (disusutkan ~40%) */
+/* Pengaturan bingkai latar belakang arena pertarungan grafis 2D (Portrait Memanjang dari Atas ke Bawah 280x340) */
 .battle-area {
-  background-image: url("../assets/images/ui/image.png");
+  background-image: url("../assets/images/ui/bg.webp");
   background-size: cover;
   background-position: center bottom;
   background-repeat: no-repeat;
-  border-radius: 16px;
-  padding: 8px 12px;
+  border-radius: 18px;
+  padding: 16px 14px 28px 14px;
   display: flex;
   justify-content: center;
-  gap: 70px;
+  gap: 36px;
   align-items: flex-end;
-  height: 200px;
+  height: 340px;
+  max-width: 280px;
   width: 100%;
+  margin: 0;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5), 0 10px 25px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
 }
@@ -199,33 +207,41 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
+  height: 190px;
   transition: transform 0.3s ease;
 }
 
-/* Standarisasi batas maksimum dimensi ukuran file aset gambar sprite karakter (disesuaikan 40% lebih ringkas) */
+/* Standarisasi batas maksimum dimensi ukuran file aset gambar sprite karakter */
 .sprite {
-  width: 85px;
-  height: 75px;
   object-fit: contain;
 }
 
 #player-img {
+  width: 132px;
+  height: 118px;
+  position: relative;
+  top: -14px;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   transform: scaleX(1);
 }
 
 #zombie-img {
+  width: 114px;
+  height: 104px;
+  position: relative;
+  top: -26px;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   transform: scaleX(-1);
 }
 
-/* Struktur desain bar penunjuk batas poin kesehatan (HP) */
+/* Struktur desain bar penunjuk batas poin kesehatan (HP) yang melayang di atas kepala karakter */
 .hp-container {
-  width: 75px;
-  height: 7px;
+  order: -1;
+  width: 90px;
+  height: 9px;
   background: #1e293b;
   border-radius: 10px;
-  margin-top: 4px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   overflow: hidden;
 }
@@ -237,9 +253,10 @@
 }
 
 .entity-name {
+  order: -2;
   font-weight: bold;
-  font-size: 0.7rem;
-  margin-top: 3px;
+  font-size: 0.72rem;
+  margin-bottom: 4px;
   background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(4px);
   padding: 1px 6px;
@@ -247,7 +264,16 @@
   color: #ffffff;
 }
 
-/* Pengaturan layar pertarungan responsif Side-by-Side (Desktop 2-Kolom) */
+/* Pengaturan posisi HP & Nama secara terpisah (independen) */
+#player-entity .hp-container {
+  margin-bottom: 26px;
+}
+
+#monster-entity .hp-container {
+  margin-bottom: 38px;
+}
+
+/* Pengaturan layar pertarungan Side-by-Side (Desktop 2-Kolom) */
 #screen-combat {
   padding: 14px 18px;
   display: none;
@@ -263,31 +289,32 @@
   display: flex;
 }
 
-/* Container Kolom Kiri: Battle Stage (Disusutkan 40%) */
+/* Container Kolom Kiri: Battle Stage Box (Memanjang Portrait 280px) */
 .battle-stage-wrapper {
-  flex: 0.95;
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 350px;
+  max-width: 290px;
+  width: 100%;
 }
 
-/* Container Kolom Kanan: Panel Kuis */
+/* Container Kolom Kanan: Panel Kuis (Di samping Stage 2D) */
 .quiz-panel {
   background: var(--panel-bg);
-  border-radius: 16px;
-  padding: 14px 18px;
+  border-radius: 18px;
+  padding: 16px 20px;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  flex: 1.1;
+  flex: 1;
   max-width: 480px;
   width: 100%;
   margin: 0;
-  height: 200px;
+  height: 340px;
 }
 
 @media screen and (max-width: 768px) {
@@ -296,15 +323,42 @@
     padding: 8px 12px;
     gap: 8px;
   }
+
+  .battle-stage-wrapper {
+    max-width: 100%;
+  }
+
   .battle-area {
     height: 150px;
     max-width: 100%;
+    gap: 90px;
   }
+
   .quiz-panel {
     height: auto;
     max-width: 100%;
     padding: 10px 14px;
   }
+}
+
+@media screen and (max-width: 768px) {
+  #screen-combat {
+    flex-direction: column;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .battle-area {
+    height: 150px;
+    max-width: 100%;
+  }
+
+  .quiz-panel {
+    height: auto;
+    max-width: 100%;
+    padding: 10px 14px;
+  }
+
   .sprite {
     width: 90px;
     height: 80px;
@@ -519,25 +573,32 @@
 @media screen and (max-width: 480px) {
   .entity {
     transform: translateX(-15%);
+    height: 140px;
   }
+
   .sprite {
     width: 110px;
   }
+
   .battle-area {
     height: 180px;
     padding: 10px;
   }
+
   .hp-container {
     width: 80px;
   }
+
   .option-btn {
     padding: 12px;
     font-size: 0.85rem;
   }
+
   #player-img {
     transition: transform 0.5s ease-out;
     transform: scaleX(1);
   }
+
   .sprite {
     width: 200px;
     height: 120px;
