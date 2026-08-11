@@ -56,6 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 if (splashScreen) {
                     splashScreen.style.opacity = '0';
                     splashScreen.style.transform = 'scale(1.02)';
+                    splashScreen.style.pointerEvents = 'none';
                     setTimeout(() => {
                         splashScreen.classList.add('hidden');
                         checkUserSession();
