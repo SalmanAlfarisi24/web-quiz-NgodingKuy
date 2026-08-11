@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngoding-Kuyy - Pusat Belajar Pemrograman</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    .hero-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 1.5rem;
+        width: 100%;
+    }
+
+    .card-actions-local {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-edit-local-card,
+    .btn-delete-local-card {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-edit-local-card {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .btn-delete-local-card {
+        background-color: #ef4444;
+        color: white;
+    }
+
+    .btn-edit-local-card:hover,
+    .btn-delete-local-card:hover {
+        opacity: 0.85;
+    }
+
+    .hidden {
+        display: none !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div id="splash-screen" class="splash-container">
+        <div class="splash-content">
+            <div class="splash-logo-box">
+                <i class="fa-solid fa-code-branch splash-icon"></i>
+            </div>
+            <h1 class="splash-title">NGODING-KUYY</h1>
+            <p class="splash-subtitle">Belajar Pemrograman Dasar</p>
+            <div class="progress-bar-loader">
+                <div class="progress-line"></div>
+            </div>
+            <div class="splash-loading-text">Loading... <span id="load-percentage">0%</span></div>
+        </div>
+    </div>
+
+    <div id="auth-modal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header-box">
+                <h3><i class="fa-solid fa-user-lock"></i> Masuk ke Ngoding-Kuyy</h3>
+                <p>Masukkan Nama untuk mulai belajar dan mengakses seluruh fitur.</p>
+            </div>
+            <div class="form-group-box">
+                <label for="auth-username">Username</label>
+                <div class="input-with-icon">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" id="auth-username" required placeholder="Contoh: salman_farisi">
+                </div>
+            </div>
+            <button id="btn-login-local" class="btn-submit-auth">
+                <i class="fa-solid fa-right-to-bracket"></i> Masuk ke Dashboard
+            </button>
+        </div>
+    </div>
+
+    <div id="toast-notification" class="toast hidden">
+        <i class="fa-solid fa-circle-check"></i> <span id="toast-message">Aksi berhasil!</span>
+    </div>
+
+    <nav class="navbar navbar-transparent" id="navbar">
+        <div class="nav-left">
+            <div class="nav-logo">
+                <i class="fa-solid fa-code-branch"></i> Ngoding-Kuyy
+            </div>
+            <div class="nav-links-desktop">
+                <a href="#hero" class="active-nav">Dashboard</a>
+                <a href="#materi-section">Materi Belajar</a>
+                <a href="game/index.html">Game Arena</a>
+                <a href="#testimoni-section">Ulasan</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <div class="nav-user-profile" id="profile-dropdown-trigger">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="User Profile" class="avatar-img">
+                <div class="user-dropdown-menu hidden" id="user-dropdown">
+                    <div class="dropdown-header">
+                        <p class="dropdown-name" id="dropdown-user-name">Guest</p>
+                        <p class="dropdown-role">Siswa Pemula</p>
+                    </div>
+                    <hr>
+                    <a href="#editor-section"><i class="fa-solid fa-laptop-code"></i> Ruang Kerja</a>
+                    <a href="#testimoni-section"><i class="fa-solid fa-comments"></i> Testimoni</a>
+                    <hr>
+                    <button class="btn-logout-dropdown" id="btn-logout-top"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
+                </div>
+            </div>
+            <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Buka menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-nav-dropdown hidden" id="mobile-nav-dropdown">
+        <a href="#hero"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a>
+        <a href="#materi-section"><i class="fa-solid fa-book"></i> <span>Materi</span></a>
+        <a href="game/index.html"><i class="fa-solid fa-gamepad"></i> <span>Game</span></a>
+        <a href="#testimoni-section"><i class="fa-solid fa-comments"></i> <span>Ulasan</span></a>
+    </div>
+
+    <main class="dashboard-content full-width-content">
+
+        <section id="hero" class="hero-card hero-video-card">
+            <video class="hero-bg-video" autoplay muted loop playsinline poster="assets/img/hero-poster.jpg">
+                <source src="assets/video/hero-bg.mp4" type="video/mp4">
+            </video>
+            <div class="hero-video-overlay"></div>
+            <div class="hero-left-info">
+                <h2>Halo, <span id="current-user-name">Guest</span> 👋</h2>
+                <p class="hero-subtitle">Selamat datang di ruang eksplorasi coding.</p>
+                <p class="hero-desc">Asah logika pemrogramanmu melalui modul interaktif dan mini game edukasi yang menyenangkan.</p>
+                <div class="hero-action-buttons">
+                    <a href="#materi-section" class="btn-hero-primary"><i class="fa-solid fa-play"></i> Mulai Belajar</a>
+                    <a href="game/index.html" class="btn-hero-secondary"><i class="fa-solid fa-gamepad"></i> Main Game</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="materi-section" class="dashboard-block-card">
+            <div class="block-header">
+                <h3><i class="fa-solid fa-graduation-cap"></i> Pilihan Pembelajaran</h3>
+            </div>
+            <div class="materi-grid-dashboard">
+                <div class="materi-card-box border-purple">
+                    <i class="fa-solid fa-gamepad icon-purple"></i>
+                    <h4>Coding Game Arena</h4>
+                    <p>Uji ketangkasan logika menembus labirin kode di arena bermain interaktif berbasis grafis 2D Canvas.</p>
+                    <a href="game/index.html" class="btn-block-link">Masuk Arena Game</a>
+                </div>
+                <div class="materi-card-box border-blue">
+                    <i class="fa-brands fa-html5 icon-orange"></i>
+                    <h4>Web Development</h4>
+                    <p>Pelajari fondasi utama perancangan layout website semantik terstruktur menggunakan HTML5, CSS3, dan JS.</p>
+                    <a href="materi-web.html" class="btn-block-link">Buka Materi Web</a>
+                </div>
+                <div class="materi-card-box border-muted">
+                    <i class="fa-solid fa-mobile-screen-button icon-muted"></i>
+                    <h4>Mobile App Dev</h4>
+                    <p>Langkah awal merakit aplikasi Android berskala performa menggunakan dasar framework native XML.</p>
+                    <button class="btn-block-link btn-disabled" disabled>Segera Hadir</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="editor-section" class="dashboard-block-card">
+            <div class="block-header">
+                <h3><i class="fa-solid fa-laptop-code"></i> Ruang Kerja Interaktif</h3>
+            </div>
+            <div class="editor-grid-box">
+                <div class="editor-left-cheatsheet">
+                    <h4>Contekan Kode</h4>
+                    <div class="cheat-node"><small>Judul Utama</small><code>&lt;h1&gt;Teks&lt;/h1&gt;</code></div>
+                    <div class="cheat-node"><small>Paragraf</small><code>&lt;p&gt;Teks&lt;/p&gt;</code></div>
+                    <div class="cheat-node"><small>Layout</small><code>display: flex;</code></div>
+                </div>
+                <div class="editor-right-workspace">
+                    <div class="workspace-panel-header">
+                        <span>index.html</span>
+                        <button id="btn-run" class="btn-compiler-run"><i class="fa-solid fa-play"></i> Run Code</button>
+                    </div>
+                    <textarea id="code-input" placeholder="<h1>Halo Dunia</h1>&#10;<style>&#10;  h1 { color: #2563EB; text-align: center; }&#10;</style>"></textarea>
+                    <div class="workspace-panel-header margin-top-10"><span>Live Preview</span></div>
+                    <iframe id="output-view" sandbox="allow-scripts"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimoni-section" class="dashboard-block-card margin-top-20">
+            <div class="block-header">
+                <h3><i class="fa-solid fa-comments"></i> Dinding Testimoni</h3>
+            </div>
+            <div class="testimoni-grid-box">
+                <div class="testimoni-form-wrapper">
+                    <form id="testimoni-form-local">
+                        <input type="hidden" id="testimoni-id" value="">
+                        <h4 id="form-title" style="margin-bottom: 12px; font-size: 1rem;"><i class="fa-solid fa-pen-to-square"></i> Tulis Ulasan Anda</h4>
+                        <div class="form-group-box">
+                            <label>Nama Anda</label>
+                            <input type="text" id="input-nama" name="nama" readonly required class="input-readonly">
+                        </div>
+                        <div class="form-group-box">
+                            <label for="input-pesan">Pesan & Kesan</label>
+                            <textarea id="input-pesan" name="pesan" required placeholder="Bagikan pengalaman serumu di Ngoding-Kuyy..."></textarea>
+                        </div>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <button type="submit" id="btn-save-testimoni" class="btn-send-testi"><i class="fa-solid fa-paper-plane"></i> Kirim Ulasan</button>
+                            <button type="button" id="btn-cancel-edit" class="btn-send-testi" style="display:none; background-color: #6b7280;"><i class="fa-solid fa-xmark"></i> Batal</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="testimoni-slider-wrapper">
+                    <div class="slider-viewport-box">
+                        <div id="testimoni-slider" class="slider-track-box">
+                            <!-- Populated dynamically via main-editor.js -->
+                        </div>
+                    </div>
+                    <div id="slider-dots" class="slider-dots-container"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="dashboard-footer full-width-footer">
+        <div class="footer-left-logo"><strong>Ngoding-Kuyy</strong></div>
+        <div class="footer-center-copy">Copyright &copy; 2026 Universitas Hamzanwadi</div>
+        <div class="footer-right-version">Version 2.0</div>
+    </footer>
+
+    <script src="assets/js/main-editor.js"></script>
+</body>
+
+</html>
