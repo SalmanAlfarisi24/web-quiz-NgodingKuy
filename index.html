@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ngoding-Kuyy - Pusat Belajar Pemrograman</title>
+    <title>Ngoding-Kuyy - Pusat Belajar & Quiz Pemrograman Interaktif</title>
+    <meta name="description" content="Ngoding-Kuyy adalah platform pembelajaran dan kuis pemrograman interaktif berbasis game 2D canvas dengan Live Code Editor.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&family=Outfit:wght@400;600;700&display=swap">
     <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -20,37 +21,41 @@
     }
 
     .card-actions-local {
-        margin-top: 10px;
+        margin-top: 12px;
         display: flex;
         gap: 8px;
     }
 
     .btn-edit-local-card,
     .btn-delete-local-card {
-        padding: 4px 10px;
+        padding: 5px 12px;
         font-size: 0.8rem;
-        border-radius: 4px;
+        border-radius: 6px;
         border: none;
         cursor: pointer;
-        transition: opacity 0.2s ease;
+        transition: all 0.2s ease;
         display: inline-flex;
         align-items: center;
-        gap: 5px;
+        gap: 6px;
+        font-weight: 600;
     }
 
     .btn-edit-local-card {
-        background-color: #3b82f6;
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
         color: white;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
     }
 
     .btn-delete-local-card {
-        background-color: #ef4444;
+        background: linear-gradient(135deg, #ef4444, #dc2626);
         color: white;
+        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
     }
 
     .btn-edit-local-card:hover,
     .btn-delete-local-card:hover {
-        opacity: 0.85;
+        transform: translateY(-1px);
+        opacity: 0.9;
     }
 
     .hidden {
@@ -70,11 +75,11 @@
                 <i class="fa-solid fa-code-branch splash-icon"></i>
             </div>
             <h1 class="splash-title">NGODING-KUYY</h1>
-            <p class="splash-subtitle">Belajar Pemrograman Dasar</p>
+            <p class="splash-subtitle">Pusat Kuis & Belajar Pemrograman Interaktif</p>
             <div class="progress-bar-loader">
                 <div class="progress-line"></div>
             </div>
-            <div class="splash-loading-text">Loading... <span id="load-percentage">0%</span></div>
+            <div class="splash-loading-text">Memuat Sistem... <span id="load-percentage">0%</span></div>
         </div>
     </div>
 
@@ -82,10 +87,10 @@
         <div class="modal-card">
             <div class="modal-header-box">
                 <h3><i class="fa-solid fa-user-lock"></i> Masuk ke Ngoding-Kuyy</h3>
-                <p>Masukkan Nama untuk mulai belajar dan mengakses seluruh fitur.</p>
+                <p>Masukkan Username untuk mulai belajar, bermain kuis, dan merekam pencapaianmu.</p>
             </div>
             <div class="form-group-box">
-                <label for="auth-username">Username</label>
+                <label for="auth-username">Username Anda</label>
                 <div class="input-with-icon">
                     <i class="fa-solid fa-user"></i>
                     <input type="text" id="auth-username" required placeholder="Contoh: salman_farisi">
@@ -101,7 +106,7 @@
         <i class="fa-solid fa-circle-check"></i> <span id="toast-message">Aksi berhasil!</span>
     </div>
 
-    <nav class="navbar navbar-transparent" id="navbar">
+    <nav class="navbar" id="navbar">
         <div class="nav-left">
             <div class="nav-logo">
                 <i class="fa-solid fa-code-branch"></i> Ngoding-Kuyy
@@ -109,7 +114,7 @@
             <div class="nav-links-desktop">
                 <a href="#hero" class="active-nav">Dashboard</a>
                 <a href="#materi-section">Materi Belajar</a>
-                <a href="game/index.html">Game Arena</a>
+                <a href="#editor-section">Ruang Kerja</a>
                 <a href="#testimoni-section">Ulasan</a>
             </div>
         </div>
@@ -122,13 +127,13 @@
                         <p class="dropdown-role">Siswa Pemula</p>
                     </div>
                     <hr>
-                    <a href="#editor-section"><i class="fa-solid fa-laptop-code"></i> Ruang Kerja</a>
-                    <a href="#testimoni-section"><i class="fa-solid fa-comments"></i> Testimoni</a>
+                    <a href="#editor-section"><i class="fa-solid fa-laptop-code"></i> Ruang Kerja Compiler</a>
+                    <a href="#testimoni-section"><i class="fa-solid fa-comments"></i> Testimoni Pengguna</a>
                     <hr>
                     <button class="btn-logout-dropdown" id="btn-logout-top"><i class="fa-solid fa-right-from-bracket"></i> Keluar</button>
                 </div>
             </div>
-            <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Buka menu">
+            <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Buka menu navigasi">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
@@ -136,8 +141,8 @@
 
     <div class="mobile-nav-dropdown hidden" id="mobile-nav-dropdown">
         <a href="#hero"><i class="fa-solid fa-house"></i> <span>Dashboard</span></a>
-        <a href="#materi-section"><i class="fa-solid fa-book"></i> <span>Materi</span></a>
-        <a href="game/index.html"><i class="fa-solid fa-gamepad"></i> <span>Game</span></a>
+        <a href="#materi-section"><i class="fa-solid fa-book"></i> <span>Materi Belajar</span></a>
+        <a href="#editor-section"><i class="fa-solid fa-laptop-code"></i> <span>Ruang Kerja</span></a>
         <a href="#testimoni-section"><i class="fa-solid fa-comments"></i> <span>Ulasan</span></a>
     </div>
 
@@ -149,37 +154,38 @@
             </video>
             <div class="hero-video-overlay"></div>
             <div class="hero-left-info">
+                <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Interactive Learning 2.0</span>
                 <h2>Halo, <span id="current-user-name">Guest</span> 👋</h2>
-                <p class="hero-subtitle">Selamat datang di ruang eksplorasi coding.</p>
-                <p class="hero-desc">Asah logika pemrogramanmu melalui modul interaktif dan mini game edukasi yang menyenangkan.</p>
+                <p class="hero-subtitle">Selamat datang di ruang eksplorasi coding & arena kuis interaktif.</p>
+                <p class="hero-desc">Asah logika pemrogramanmu melalui modul interaktif, 15+ level kuis berkelok-kelok (zigzag map), dan arena pertempuran karakter yang seru!</p>
                 <div class="hero-action-buttons">
                     <a href="#materi-section" class="btn-hero-primary"><i class="fa-solid fa-play"></i> Mulai Belajar</a>
-                    <a href="game/index.html" class="btn-hero-secondary"><i class="fa-solid fa-gamepad"></i> Main Game</a>
+                    <a href="game/index.html" class="btn-hero-secondary"><i class="fa-solid fa-gamepad"></i> Masuk Arena Kuis Game</a>
                 </div>
             </div>
         </section>
 
         <section id="materi-section" class="dashboard-block-card">
             <div class="block-header">
-                <h3><i class="fa-solid fa-graduation-cap"></i> Pilihan Pembelajaran</h3>
+                <h3><i class="fa-solid fa-graduation-cap"></i> Pilihan Pembelajaran & Arena Kuis</h3>
             </div>
             <div class="materi-grid-dashboard">
                 <div class="materi-card-box border-purple">
                     <i class="fa-solid fa-gamepad icon-purple"></i>
-                    <h4>Coding Game Arena</h4>
-                    <p>Uji ketangkasan logika menembus labirin kode di arena bermain interaktif berbasis grafis 2D Canvas.</p>
-                    <a href="game/index.html" class="btn-block-link">Masuk Arena Game</a>
+                    <h4>Coding Quiz Arena</h4>
+                    <p>Uji ketangkasan logika menembus 15+ level map berkelok-kelok (zigzag) dengan pertempuran karakter 2D Canvas yang seru.</p>
+                    <a href="game/index.html" class="btn-block-link btn-purple"><i class="fa-solid fa-trophy"></i> Masuk Arena Game</a>
                 </div>
                 <div class="materi-card-box border-blue">
                     <i class="fa-brands fa-html5 icon-orange"></i>
                     <h4>Web Development</h4>
-                    <p>Pelajari fondasi utama perancangan layout website semantik terstruktur menggunakan HTML5, CSS3, dan JS.</p>
-                    <a href="materi-web.html" class="btn-block-link">Buka Materi Web</a>
+                    <p>Pelajari fondasi utama perancangan layout website semantik terstruktur menggunakan HTML5, CSS3, dan JavaScript.</p>
+                    <a href="materi-web.html" class="btn-block-link"><i class="fa-solid fa-book-open"></i> Buka Materi Web</a>
                 </div>
                 <div class="materi-card-box border-muted">
                     <i class="fa-solid fa-mobile-screen-button icon-muted"></i>
                     <h4>Mobile App Dev</h4>
-                    <p>Langkah awal merakit aplikasi Android berskala performa menggunakan dasar framework native XML.</p>
+                    <p>Langkah awal merakit aplikasi Android berskala performa tinggi menggunakan dasar XML dan Kotlin native.</p>
                     <button class="btn-block-link btn-disabled" disabled>Segera Hadir</button>
                 </div>
             </div>
@@ -187,22 +193,23 @@
 
         <section id="editor-section" class="dashboard-block-card">
             <div class="block-header">
-                <h3><i class="fa-solid fa-laptop-code"></i> Ruang Kerja Interaktif</h3>
+                <h3><i class="fa-solid fa-laptop-code"></i> Ruang Kerja Live Editor Interaktif</h3>
             </div>
             <div class="editor-grid-box">
                 <div class="editor-left-cheatsheet">
                     <h4>Contekan Kode</h4>
                     <div class="cheat-node"><small>Judul Utama</small><code>&lt;h1&gt;Teks&lt;/h1&gt;</code></div>
                     <div class="cheat-node"><small>Paragraf</small><code>&lt;p&gt;Teks&lt;/p&gt;</code></div>
-                    <div class="cheat-node"><small>Layout</small><code>display: flex;</code></div>
+                    <div class="cheat-node"><small>Tombol</small><code>&lt;button&gt;Klik&lt;/button&gt;</code></div>
+                    <div class="cheat-node"><small>Flexbox</small><code>display: flex;</code></div>
                 </div>
                 <div class="editor-right-workspace">
                     <div class="workspace-panel-header">
-                        <span>index.html</span>
+                        <span><i class="fa-brands fa-html5"></i> index.html</span>
                         <button id="btn-run" class="btn-compiler-run"><i class="fa-solid fa-play"></i> Run Code</button>
                     </div>
-                    <textarea id="code-input" placeholder="<h1>Halo Dunia</h1>&#10;<style>&#10;  h1 { color: #2563EB; text-align: center; }&#10;</style>"></textarea>
-                    <div class="workspace-panel-header margin-top-10"><span>Live Preview</span></div>
+                    <textarea id="code-input" placeholder="<h1>Halo Dunia</h1>&#10;<style>&#10;  h1 { color: #38BDF8; text-align: center; font-family: sans-serif; }&#10;</style>"></textarea>
+                    <div class="workspace-panel-header margin-top-10"><span><i class="fa-solid fa-desktop"></i> Live Preview</span></div>
                     <iframe id="output-view" sandbox="allow-scripts"></iframe>
                 </div>
             </div>
@@ -210,20 +217,20 @@
 
         <section id="testimoni-section" class="dashboard-block-card margin-top-20">
             <div class="block-header">
-                <h3><i class="fa-solid fa-comments"></i> Dinding Testimoni</h3>
+                <h3><i class="fa-solid fa-comments"></i> Dinding Testimoni & Ulasan</h3>
             </div>
             <div class="testimoni-grid-box">
                 <div class="testimoni-form-wrapper">
                     <form id="testimoni-form-local">
                         <input type="hidden" id="testimoni-id" value="">
-                        <h4 id="form-title" style="margin-bottom: 12px; font-size: 1rem;"><i class="fa-solid fa-pen-to-square"></i> Tulis Ulasan Anda</h4>
+                        <h4 id="form-title" style="margin-bottom: 14px; font-size: 1.05rem; color: var(--secondary);"><i class="fa-solid fa-pen-to-square"></i> Tulis Ulasan Anda</h4>
                         <div class="form-group-box">
                             <label>Nama Anda</label>
                             <input type="text" id="input-nama" name="nama" readonly required class="input-readonly">
                         </div>
                         <div class="form-group-box">
                             <label for="input-pesan">Pesan & Kesan</label>
-                            <textarea id="input-pesan" name="pesan" required placeholder="Bagikan pengalaman serumu di Ngoding-Kuyy..."></textarea>
+                            <textarea id="input-pesan" name="pesan" required placeholder="Bagikan pengalaman serumu saat mencoba kuis dan live editor di Ngoding-Kuyy..."></textarea>
                         </div>
                         <div style="display:flex; gap:10px; align-items:center;">
                             <button type="submit" id="btn-save-testimoni" class="btn-send-testi"><i class="fa-solid fa-paper-plane"></i> Kirim Ulasan</button>
@@ -247,7 +254,7 @@
     <footer class="dashboard-footer full-width-footer">
         <div class="footer-left-logo"><strong>Ngoding-Kuyy</strong></div>
         <div class="footer-center-copy">Copyright &copy; 2026 Universitas Hamzanwadi</div>
-        <div class="footer-right-version">Version 2.0</div>
+        <div class="footer-right-version">Version 2.5</div>
     </footer>
 
     <script src="assets/js/main-editor.js"></script>

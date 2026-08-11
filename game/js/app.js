@@ -215,7 +215,7 @@ window.Game = (function() {
         });
     }
 
-    /* Membuka sub-peta tingkat kesulitan level berdasarkan materi pemrograman yang dipilih */
+    /* Membuka sub-peta tingkat kesulitan level berbasis zigzag winding path */
     function openWorld(worldId) {
         if (!window.GameData) return;
 
@@ -229,17 +229,38 @@ window.Game = (function() {
         const levels = window.GameData.levels[worldId] || [];
         const playerMaxLevel = player.progress[worldId] || 1;
 
-        levels.forEach(lvl => {
+        // Pattern offset horizontal untuk menciptakan rute berkelok-kelok (zigzag winding map)
+        const offsets = [0, -60, -95, -55, 0, 55, 95, 60, 0, -60, -95, -55, 0, 55, 95];
+
+        levels.forEach((lvl, idx) => {
             const btn = document.createElement('button');
-            btn.className = 'node-btn';
+            const isBoss = lvl.type === 'boss';
+            const isCompleted = lvl.id < playerMaxLevel;
+            const isCurrent = lvl.id === playerMaxLevel;
+            const isLocked = lvl.id > playerMaxLevel;
+
+            btn.className = `node-btn ${isBoss ? 'boss' : ''} ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`;
             
-            if (lvl.id > playerMaxLevel) {
+            const offsetPx = isBoss ? 0 : (offsets[idx % offsets.length] || 0);
+            btn.style.transform = `translateX(${offsetPx}px)`;
+
+            let iconHtml = '';
+            if (isLocked) {
                 btn.disabled = true;
-                btn.innerText = '🔒';
+                iconHtml = `<span class="node-icon">🔒</span><span class="node-num">Lvl ${lvl.id}</span>`;
+            } else if (isBoss) {
+                iconHtml = `<span class="node-icon">👑</span><span class="node-num">BOSS ${lvl.id}</span>`;
+                btn.onclick = () => prepareCombat(worldId, lvl);
+            } else if (isCompleted) {
+                iconHtml = `<span class="node-icon">⭐</span><span class="node-num">Lvl ${lvl.id}</span>`;
+                btn.onclick = () => prepareCombat(worldId, lvl);
             } else {
-                btn.innerText = lvl.id;
+                iconHtml = `<span class="node-icon">⚔️</span><span class="node-num">Lvl ${lvl.id}</span>`;
                 btn.onclick = () => prepareCombat(worldId, lvl);
             }
+
+            btn.innerHTML = iconHtml;
+            btn.title = `${lvl.name} (HP Monster: ${lvl.hp})`;
             container.appendChild(btn);
         });
 
