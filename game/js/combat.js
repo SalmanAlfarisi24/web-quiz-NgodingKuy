@@ -1,12 +1,25 @@
 const CombatLogic = (function() {
     
+    function resolvePath(path) {
+        const p = window.location.pathname;
+        const isRoot = p.endsWith('game.html') || (!p.includes('/game/') && !p.endsWith('game/index.html'));
+        if (isRoot && !path.startsWith('game/')) {
+            return 'game/' + path;
+        }
+        return path;
+    }
+
+    function createAudio(path) {
+        return new Audio(resolvePath(path));
+    }
+
     const sfx = {
-        shoot: new Audio('assets/sounds/sfx_shoot.mp3'),
-        melee: new Audio('assets/sounds/sfx_melee.mp3'),
-        correct: new Audio('assets/sounds/sfx_correct.mp3'),
-        wrong: new Audio('assets/sounds/sfx_wrong.mp3'),
-        menuBgm: new Audio('assets/sounds/sound_games.mp3'),       
-        zombieAttack: new Audio('assets/sounds/zombie_attack.mp3') 
+        shoot: createAudio('assets/sounds/sfx_shoot.mp3'),
+        melee: createAudio('assets/sounds/sfx_melee.mp3'),
+        correct: createAudio('assets/sounds/sfx_correct.mp3'),
+        wrong: createAudio('assets/sounds/sfx_wrong.mp3'),
+        menuBgm: createAudio('assets/sounds/sound_games.mp3'),       
+        zombieAttack: createAudio('assets/sounds/zombie_attack.mp3') 
     };
 
     sfx.menuBgm.loop = true; 
@@ -67,7 +80,7 @@ const CombatLogic = (function() {
         const isMelee = Math.random() > 0.5;
 
         if (isMelee) {
-            if (pImg) pImg.style.transform = "translateX(140px) scaleX(1)";
+            if (pImg) pImg.style.transform = "translateX(75px) scaleX(1)";
             
             sfx.melee.currentTime = 0;
             sfx.melee.play().catch(e => {});
@@ -78,7 +91,7 @@ const CombatLogic = (function() {
                 });
             });
         } else {
-            if (pImg) pImg.style.transform = "translateX(20px) scaleX(1)"; 
+            if (pImg) pImg.style.transform = "translateX(15px) scaleX(1)"; 
             
             sfx.shoot.currentTime = 0;
             sfx.shoot.play().catch(e => {});
@@ -111,7 +124,7 @@ const CombatLogic = (function() {
         sfx.wrong.play().catch(e => {});
 
         const zImg = document.getElementById('zombie-img');
-        if (zImg) zImg.style.transform = "translateX(-140px) scaleX(-1)";
+        if (zImg) zImg.style.transform = "translateX(-75px) scaleX(-1)";
 
         SpriteSystem.play('zombie-img', 'assets/images/zombie/Walk', 10, 80, () => {
             

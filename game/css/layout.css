@@ -1,25 +1,28 @@
-/* Pengaturan kontainer utama game agar responsif menyerupai ukuran layar aplikasi mobile */
+/* Pengaturan kontainer utama game agar responsif untuk layar PC desktop & mobile */
 #game-container {
-  width: 100%;
-  max-width: 480px;
-  height: 100vh;
-  max-height: 900px;
+  width: 95%;
+  max-width: 880px;
+  height: min(92vh, 760px);
   background: var(--bg-color);
   position: relative;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow);
+  justify-content: space-between;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
   overflow: hidden;
+  margin: 10px auto;
 }
 
 /* Pengaturan tata letak bar status bagian atas (HUD) menggunakan Flexbox */
 #hud {
   background: var(--panel-bg);
-  padding: 15px 20px;
+  padding: 15px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 10;
 }
 
@@ -176,16 +179,22 @@
 .battle-area {
   background-image: url("../assets/images/ui/image.png");
   background-size: cover;
-  background-position: center;
+  background-position: center bottom;
   background-repeat: no-repeat;
-  border-radius: var(--border-radius);
-  padding: 20px;
+  border-radius: 16px;
+  padding: 8px 15px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 110px;
   align-items: flex-end;
-  height: 250px;
-  margin-bottom: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  height: 150px;
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto 6px auto;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4);
+  position: relative;
+  overflow: hidden;
 }
 
 .entity {
@@ -197,29 +206,28 @@
 
 /* Standarisasi batas maksimum dimensi ukuran file aset gambar sprite karakter */
 .sprite {
-  width: 140px;
-  height: 120px;
+  width: 95px;
+  height: 85px;
   object-fit: contain;
 }
 
 #player-img {
-  transition: transform 0.5s ease-out;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   transform: scaleX(1);
 }
 
 #zombie-img {
-  transition: transform 0.5s ease-out;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
   transform: scaleX(-1);
-  margin-right: 25px;
 }
 
 /* Struktur desain bar penunjuk batas poin kesehatan (HP) */
 .hp-container {
-  width: 100px;
-  height: 12px;
+  width: 80px;
+  height: 8px;
   background: #1e293b;
   border-radius: 10px;
-  margin-top: 10px;
+  margin-top: 4px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   overflow: hidden;
 }
@@ -232,57 +240,96 @@
 
 .entity-name {
   font-weight: bold;
-  font-size: 0.8rem;
-  margin-top: 5px;
-  background: rgba(15, 23, 42, 0.8);
+  font-size: 0.72rem;
+  margin-top: 3px;
+  background: rgba(15, 23, 42, 0.85);
   backdrop-filter: blur(4px);
-  padding: 2px 8px;
-  border-radius: 10px;
+  padding: 1px 6px;
+  border-radius: 8px;
   color: #ffffff;
+}
+
+/* Pengaturan layar pertarungan agar muat 1 layar tanpa scrollbar & tanpa tertutup bottom nav */
+#screen-combat {
+  padding: 8px 14px;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6px;
+  overflow-y: hidden !important;
+  flex: 1;
+}
+
+#screen-combat.active {
+  display: flex;
 }
 
 /* Pengaturan tata letak wadah panel pertanyaan kuis matematika coding */
 .quiz-panel {
   background: var(--panel-bg);
-  border-radius: var(--border-radius);
-  padding: 20px;
+  border-radius: 16px;
+  padding: 10px 14px;
   box-shadow: var(--shadow);
-  flex: 1;
   display: flex;
   flex-direction: column;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 680px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .combat-hud {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
   font-weight: bold;
+  font-size: 0.82rem;
   color: var(--secondary);
 }
 
 #question-text {
   text-align: center;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
   color: #ffffff;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 0;
+}
+
+#screen-home .options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+#options-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
 }
 
 .options-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
 }
 
 .option-btn {
-  padding: 15px;
+  padding: 8px 12px;
   background: var(--bg-color);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
   font-weight: 600;
+  font-size: 0.85rem;
   text-align: left;
   color: var(--text-dark);
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  min-height: 38px;
 }
 
 .option-btn:hover {
@@ -292,12 +339,30 @@
 
 .combat-tools {
   display: flex;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 8px;
+  margin-top: 2px;
 }
 
 .combat-tools .tool-btn {
   flex: 1;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid var(--primary);
+  color: var(--secondary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.combat-tools .tool-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
 }
 
 /* Pengaturan bar navigasi menu utama di bagian bawah layar game */
@@ -305,9 +370,11 @@
   display: flex;
   justify-content: space-around;
   background: var(--panel-bg);
-  padding: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 8px 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 10;
+  height: 55px;
+  align-items: center;
 }
 
 .nav-btn {

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Code Journey - Arena Game</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="game/css/style.css">
+    <link rel="stylesheet" href="game/css/layout.css">
+    <link rel="stylesheet" href="game/css/animation.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -15,7 +15,7 @@
     
     <header id="hud">
         <div class="hud-left">
-            <a href="../index.html" class="stat-badge" style="text-decoration:none; color:var(--text-dark); cursor:pointer;"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+            <a href="index.html" class="stat-badge" style="text-decoration:none; color:var(--text-dark); cursor:pointer;"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
             <div class="stat-badge">👨‍💻 Lvl <span id="hud-level">1</span></div>
             <div class="stat-badge" style="color: var(--primary)">⭐ <span id="hud-xp">0</span></div>
         </div>
@@ -39,13 +39,13 @@
     <main id="screen-combat" class="screen" style="padding: 10px;">
         <div class="battle-area" id="battle-background">
             <div class="entity" id="player-entity">
-                <img id="player-img" class="sprite" src="assets/images/player/Idle (1).png" alt="Player">
+                <img id="player-img" class="sprite" src="game/assets/images/player/Idle (1).png" alt="Player">
                 <div class="hp-container"><div class="hp-bar" id="player-hp-bar"></div></div>
                 <div class="entity-name">Kamu (<span id="player-hp-txt">100</span>)</div>
             </div>
             
             <div class="entity" id="monster-entity">
-                <img id="zombie-img" class="sprite" src="assets/images/zombie/Idle (1).png" alt="Monster">
+                <img id="zombie-img" class="sprite" src="game/assets/images/zombie/Idle (1).png" alt="Monster">
                 <div class="hp-container"><div class="hp-bar" id="monster-hp-bar" style="background: var(--hp-red);"></div></div>
                 <div class="entity-name"><span id="monster-name-txt">Monster</span> (<span id="monster-hp-txt">50</span>)</div>
             </div>
@@ -123,10 +123,10 @@
 
 </div>
 
-<script src="js/questions.js"></script>
-<script src="js/sprite.js"></script>
-<script src="js/combat.js"></script>
-<script src="js/app.js"></script>
+<script src="game/js/questions.js"></script>
+<script src="game/js/sprite.js"></script>
+<script src="game/js/combat.js"></script>
+<script src="game/js/app.js"></script>
 
 </body>
 </html>

@@ -143,17 +143,29 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// 6. Kompiler / Live Editor Code Run
-if (btnRun && codeInput && outputView) {
+// 6. Kompiler / Live Editor Code Run (Menggunakan HTML5 srcdoc secara aman & instan)
+function runLiveEditorCode() {
+    if (!outputView) return;
+    const defaultCode = "<h1>Halo Dunia</h1>\n<style>\n  h1 { color: #38BDF8; text-align: center; font-family: sans-serif; padding-top: 20px; }\n</style>";
+    const userCode = (codeInput && codeInput.value.trim() !== "") ? codeInput.value : defaultCode;
+    
+    outputView.srcdoc = userCode;
+}
+
+if (btnRun) {
     btnRun.addEventListener('click', () => {
-        const userCode = codeInput.value;
-        const iframeDoc = outputView.contentWindow.document;
-        iframeDoc.open();
-        iframeDoc.write(userCode);
-        iframeDoc.close();
+        runLiveEditorCode();
         showToast('Kode berhasil dieksekusi! 💻');
     });
 }
+
+// Jalankan otomatis kode default saat halaman dimuat
+window.addEventListener('load', () => {
+    if (codeInput && !codeInput.value) {
+        codeInput.value = "<h1>Halo Dunia</h1>\n<style>\n  h1 { color: #38BDF8; text-align: center; font-family: sans-serif; padding-top: 20px; }\n</style>";
+    }
+    runLiveEditorCode();
+});
 
 // 7. Notifikasi Toast
 function showToast(message) {

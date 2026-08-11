@@ -44,26 +44,14 @@ window.Game = (function() {
         timeLeft: 15, timerInterval: null
     };
 
-    /* Menghubungkan sistem game dengan asset sprite dan memuat data eksternal */
+    /* Menghubungkan sistem game dengan asset sprite dan memuat data lokal */
     function init() {
         CombatLogic.initSprites();
-        window.GameData = FallbackGameData;
-        
-        fetch('js/questions.json')
-            .then(res => {
-                if(!res.ok) throw new Error("Berkas JSON kuis tidak ditemukan");
-                return res.json();
-            })
-            .then(data => {
-                window.GameData = data; 
-                loadUserData();
-                listenLeaderboard();
-            })
-            .catch(err => {
-                console.warn("Menggunakan repositori kuis lokal, file JSON eksternal tidak terbaca:", err);
-                loadUserData();
-                listenLeaderboard();
-            });
+        if (!window.GameData || !window.GameData.worlds) {
+            window.GameData = FallbackGameData;
+        }
+        loadUserData();
+        listenLeaderboard();
     }
 
     /* Mengambil data progres, level, koin, dan gem pengguna dari localStorage */

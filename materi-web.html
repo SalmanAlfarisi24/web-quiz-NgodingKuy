@@ -5,124 +5,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Materi Web Development - NgodingKuy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap">
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        /* Tambahan style khusus halaman materi agar membaca lebih nyaman */
+        .materi-page-wrapper {
+            padding-top: 100px;
+            padding-bottom: 4rem;
+        }
         .materi-body-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             padding: 2.5rem;
-            border-radius: 12px;
+            border-radius: 18px;
             margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        .materi-body-card h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            color: #FFFFFF;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
         }
         .materi-body-card h3 {
             margin: 1.5rem 0 0.5rem;
-            color: var(--accent-color);
+            color: var(--secondary);
+            font-size: 1.15rem;
+        }
+        .materi-body-card p {
+            color: #CBD5E1;
+            line-height: 1.7;
+            margin-bottom: 1rem;
         }
         .materi-body-card ul {
             margin-left: 1.5rem;
             margin-bottom: 1rem;
+            color: #CBD5E1;
+            line-height: 1.7;
         }
         .code-block-display {
-            background-color: var(--panel-top);
-            padding: 1rem;
-            border-left: 4px solid var(--accent-color);
-            border-radius: 4px;
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #0d1117;
+            padding: 1.2rem;
+            border-left: 4px solid var(--secondary);
+            border-radius: 8px;
+            font-family: monospace;
             margin: 1rem 0;
-            color: var(--text-main);
+            color: #38bdf8;
             overflow-x: auto;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         .materi-navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 2rem;
+            margin-top: 2.5rem;
+            gap: 1rem;
+        }
+        .btn-nav-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .btn-back-menu {
+            background-color: var(--card-bg);
+            color: #FFFFFF;
+            border: 1px solid var(--border-color);
+        }
+        .btn-back-menu:hover {
+            background-color: var(--border-color);
+            color: var(--secondary);
+        }
+        .btn-go-editor {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #FFFFFF;
+        }
+        .btn-go-editor:hover {
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo"><i class="fa-solid fa-code-branch"></i> NgodingKuy</div>
-            
-            <button id="burger-menu" class="burger-btn">
-                <i class="fa-solid fa-bars"></i>
-            </button>
-
-            <ul id="nav-links" class="nav-links">
-                <li><a href="index.html#hero"><i class="fa-solid fa-house"></i> Home</a></li>
-                <li><a href="index.html#materi-section"><i class="fa-solid fa-book"></i> Materi</a></li>
-                <li><a href="index.html#editor-section"><i class="fa-solid fa-laptop-code"></i> Live Editor</a></li>
-                <li><a href="index.html#testimoni-section"><i class="fa-solid fa-comments"></i> Testimoni</a></li>
-            </ul>
-            <button id="theme-toggle" class="btn-theme"><i class="fa-solid fa-moon"></i></button>
+        <div class="nav-left">
+            <div class="nav-logo">
+                <i class="fa-solid fa-code-branch"></i> Ngoding-Kuyy
+            </div>
+            <div class="nav-links-desktop">
+                <a href="index.html#hero">Dashboard</a>
+                <a href="index.html#materi-section" class="active-nav">Materi Belajar</a>
+                <a href="index.html#editor-section">Ruang Kerja</a>
+                <a href="index.html#testimoni-section">Ulasan</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="index.html#materi-section" class="btn-hero-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</a>
         </div>
     </nav>
 
-    <header class="hero" style="padding: 3rem 2rem;">
-        <div class="hero-content">
-            <h1><i class="fa-brands fa-html5"></i> Dasar HTML5 & CSS3</h1>
-            <p>Pahami konsep struktur dan penghias halaman web sebelum mulai mempraktikkannya.</p>
-        </div>
-    </header>
+    <div class="materi-page-wrapper">
+        <header class="hero-card" style="padding: 2.5rem 4rem; max-width: 1200px; margin: 0 auto 2rem auto; width: 90%; background: linear-gradient(135deg, #1e293b, #0f172a); border-radius: 18px; border: 1px solid rgba(255,255,255,0.08);">
+            <div class="hero-content">
+                <h1 style="font-family: 'Poppins', sans-serif; font-size: 2.2rem; color: #FFFFFF; margin-bottom: 0.5rem;"><i class="fa-brands fa-html5" style="color: #f06529;"></i> Dasar HTML5 & CSS3</h1>
+                <p style="color: var(--text-muted); font-size: 1rem;">Pahami konsep struktur dan hiasan halaman web sebelum mulai mempraktikkannya di Live Editor.</p>
+            </div>
+        </header>
 
-    <main class="container" style="max-width: 900px; padding-top: 2rem;">
-        
-        <article class="materi-body-card">
-            <h2>Bab 1: Pengenalan HTML</h2>
-            <p><strong>HTML (HyperText Markup Language)</strong> adalah bahasa markup standar yang digunakan untuk membuat kerangka dasar sebuah halaman web. HTML menentukan bagaimana konten terstruktur pada browser.</p>
+        <main class="container" style="max-width: 1200px; margin: 0 auto; width: 90%;">
             
-            <h3>1. Struktur Dokumen Dasar HTML</h3>
-            <p>Setiap berkas HTML wajib memiliki struktur kerangka standar seperti berikut:</p>
-            
-            <div class="code-block-display">
+            <article class="materi-body-card">
+                <h2>Bab 1: Pengenalan HTML5</h2>
+                <p><strong>HTML (HyperText Markup Language)</strong> adalah bahasa markup standar yang digunakan untuk membuat kerangka dasar sebuah halaman web. HTML menentukan bagaimana konten terstruktur pada browser.</p>
+                
+                <h3>1. Struktur Dokumen Dasar HTML</h3>
+                <p>Setiap berkas HTML wajib memiliki struktur kerangka standar seperti berikut:</p>
+                
+                <div class="code-block-display">
 &lt;!DOCTYPE html&gt;<br>
 &lt;html&gt;<br>
 &lt;head&gt;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Judul Halaman&lt;/title&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Judul Halaman Web&lt;/title&gt;<br>
 &lt;/head&gt;<br>
 &lt;body&gt;<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Ini Judul Utama&lt;/h1&gt;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Ini adalah sebuah paragraf.&lt;/p&gt;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Ini adalah sebuah paragraf teks.&lt;/p&gt;<br>
 &lt;/body&gt;<br>
 &lt;/html&gt;
-            </div>
+                </div>
 
-            <h3>2. Elemen Penting HTML</h3>
-            <ul>
-                <li><strong>Heading (&lt;h1&gt; sampai &lt;h6&gt;):</strong> Digunakan untuk membuat judul atau sub-judul materi.</li>
-                <li><strong>Paragraph (&lt;p&gt;):</strong> Digunakan untuk menulis teks paragraf biasa.</li>
-                <li><strong>Style (&lt;style&gt;):</strong> Digunakan untuk menyisipkan aturan hiasan CSS langsung di dalam file HTML.</li>
-            </ul>
-        </article>
+                <h3>2. Elemen Penting HTML</h3>
+                <ul>
+                    <li><strong>Heading (&lt;h1&gt; sampai &lt;h6&gt;):</strong> Digunakan untuk membuat judul atau sub-judul materi.</li>
+                    <li><strong>Paragraph (&lt;p&gt;):</strong> Digunakan untuk menulis teks paragraf biasa.</li>
+                    <li><strong>Hyperlink (&lt;a href="..."&gt;):</strong> Digunakan untuk membuat tautan antar halaman.</li>
+                </ul>
+            </article>
 
-        <article class="materi-body-card">
-            <h2>Bab 2: Pengenalan CSS Dasar</h2>
-            <p><strong>CSS (Cascading Style Sheets)</strong> bertanggung jawab untuk mengatur tampilan visual halaman web, mulai dari warna teks, font, ukuran, hingga tata letak layout elemen HTML.</p>
-            
-            <h3>Contoh Penerapan Pewarnaan Elemen:</h3>
-            <div class="code-block-display">
+            <article class="materi-body-card">
+                <h2>Bab 2: Pengenalan CSS3 Dasar</h2>
+                <p><strong>CSS (Cascading Style Sheets)</strong> bertanggung jawab untuk mengatur tampilan visual halaman web, mulai dari warna teks, font, ukuran, hingga tata letak layout elemen HTML.</p>
+                
+                <h3>Contoh Penerapan Pewarnaan Elemen:</h3>
+                <div class="code-block-display">
 &lt;style&gt;<br>
 &nbsp;&nbsp;h1 {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;color: #4f46e5; /* Mengubah warna teks judul */<br>
-&nbsp;&nbsp;&nbsp;&nbsp;text-align: center; /* Membuat judul ke tengah */<br>
+&nbsp;&nbsp;&nbsp;&nbsp;color: #38bdf8; /* Mengubah warna teks judul menjadi biru terang */<br>
+&nbsp;&nbsp;&nbsp;&nbsp;text-align: center; /* Membuat judul berada di tengah layar */<br>
 &nbsp;&nbsp;}<br>
 &lt;/style&gt;
+                </div>
+            </article>
+
+            <div class="materi-navigation">
+                <a href="index.html#materi-section" class="btn-nav-action btn-back-menu"><i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard</a>
+                <a href="index.html#editor-section" class="btn-nav-action btn-go-editor">Praktik di Live Editor <i class="fa-solid fa-laptop-code"></i></a>
             </div>
-        </article>
 
-        <div class="materi-navigation">
-            <a href="index.html#materi-section" class="btn-danger" style="text-decoration: none;"><i class="fa-solid fa-arrow-left"></i> Kembali ke Menu</a>
-            <a href="index.html#editor-section" class="btn-success" style="text-decoration: none;">Praktik di Live Editor <i class="fa-solid fa-laptop-code"></i></a>
-        </div>
+        </main>
+    </div>
 
-    </main>
-
-    <footer class="footer">
-        <p>&copy; 2026 <strong>NgodingKuy</strong>. Semua materi disiapkan untuk menunjang pengerjaan tugas akhir.</p>
+    <footer class="dashboard-footer full-width-footer">
+        <div class="footer-left-logo"><strong>Ngoding-Kuyy</strong></div>
+        <div class="footer-center-copy">Copyright &copy; 2026 Universitas Hamzanwadi</div>
+        <div class="footer-right-version">Version 2.5</div>
     </footer>
 
-    <script src="assets/js/main-editor.js"></script>
 </body>
 </html>
